@@ -1,35 +1,53 @@
 import { useState } from "react";
 import "./Contact.css";
 
-import { useRef } from "react";
-import emailjs from "@emailjs/browser";
-
 export default function Contact() {
   const [showForm, setShowForm] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const form = useRef();
+  const isFormValid =
+    name.trim() !== "" && email.includes("@") && message.trim() !== "";
 
-  const sendEmail = (e) => {
+  const handleManualSubmit = async (e) => {
     e.preventDefault();
+    setIsSending(true);
 
-    emailjs.sendForm(
-      "service_ivcdjf7",
-      "template_nv6yqig",
-      form.current,
-      "q1NS15pvkXyOQjQPb"
-    );
-    setName("");
-    setEmail("");
-    setMessage("");
-    e.target.reset();
+    try {
+      const response = await fetch("https://formspree.io/f/mqargbpw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          message: message
+        })
+      });
+
+      if (response.ok) {
+        // تفريغ الحقول
+        setName("");
+        setEmail("");
+        setMessage("");
+        // إغلاق النافذة فوراً
+        setShowForm(false);
+        // تم حذف الـ alert بناءً على طلبك
+      } else {
+        alert("حدث خطأ ما، يرجى المحاولة مرة أخرى.");
+      }
+    // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      alert("مشكلة في الاتصال. تأكد من جودة الإنترنت.");
+    } finally {
+      setIsSending(false);
+    }
   };
 
-  const isFormValid =
-    name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
   return (
     <div id="contact" className="Box">
       <div className="continer continerBoxcontact">
@@ -49,31 +67,46 @@ export default function Contact() {
       {showForm && (
         <div className="Overlay">
           <div className="FormBox">
-            <form ref={form} onSubmit={sendEmail}>
+            <form onSubmit={handleManualSubmit}>
               <h3>Contact Us</h3>
+
               <input
                 type="text"
                 name="name"
-                id="name"
+                value={name}
                 placeholder="Your Name"
                 onChange={(e) => setName(e.target.value)}
+                required
               />
+
               <input
-                type="text"
+                type="email"
                 name="email"
+                value={email}
                 placeholder="Your Email"
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
+
               <textarea
                 rows={7}
                 name="message"
-                id="message"
+                value={message}
                 placeholder="Enter Your message"
                 onChange={(e) => setMessage(e.target.value)}
+                required
               ></textarea>
+
               <div className="FormActions">
-                <button onClick={() => setShowForm(false)}>Close</button>
-                {isFormValid && <button type="submit">Send</button>}
+                <button type="button" onClick={() => setShowForm(false)}>
+                  Close
+                </button>
+
+                {isFormValid && (
+                  <button type="submit" disabled={isSending}>
+                    {isSending ? "Sending..." : "Send"}
+                  </button>
+                )}
               </div>
             </form>
           </div>
