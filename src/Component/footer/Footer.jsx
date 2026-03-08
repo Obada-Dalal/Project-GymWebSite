@@ -13,17 +13,17 @@ export default function Footer() {
           <div className="LogoAndIcon">
             <img src={Logo}></img>
             <ul>
-              <a href="https://www.facebook.com/Omar ALshalak" target="_blank">
+              <a href="https://www.facebook.com/Obada Dl" target="_blank">
                 <li>
                   <FaFacebookSquare />
                 </li>
               </a>
-              <a href="https://www.instagram.com/oalshalak" target="_blank">
+              <a href="https://www.instagram.com/obadadl" target="_blank">
                 <li>
                   <FaInstagramSquare />
                 </li>
               </a>
-              <a href="https://wa.me/963982359538" target="_blank">
+              <a href="https://wa.me/963947584270" target="_blank">
                 <li>
                   <FaWhatsappSquare />
                 </li>

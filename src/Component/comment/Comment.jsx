@@ -67,7 +67,7 @@ export default function Comment() {
         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus laudantium dolorum ipsum assumenda",
       text: "Sabir",
       img: <IoPerson />
-    },
+    }
   ];
 
   const VISIBLE_COUNT = 3;
@@ -78,7 +78,7 @@ export default function Comment() {
 
   const cardRef = useRef(null);
   const [cardWidth, setCardWidth] = useState(360);
-  const [,  setGroupWidth] = useState(
+  const [, setGroupWidth] = useState(
     cardWidth * VISIBLE_COUNT + GAP * (VISIBLE_COUNT - 1)
   );
 
@@ -122,7 +122,7 @@ export default function Comment() {
   return (
     <div className="Box">
       <div className="continer continerComment">
-        <div className="slider-container" >
+        <div className="slider-container">
           <h2 className="Title-slider-container">Comments</h2>
           <div
             className="slider-wrapper"
